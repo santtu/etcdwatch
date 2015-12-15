@@ -1,3 +1,4 @@
+# -*- coding: utf-8 -*-
 #
 # Copyright © 2015 Santeri Paavolainen <santtu@iki.fi>
 #
@@ -13,11 +14,13 @@ import io
 import json
 import subprocess
 import tempfile
-import sys
 import logging
 import urllib3.exceptions
 import time
-from urllib.parse import urlparse
+try:
+    from urllib.parse import urlparse
+except:
+    from urlparse import urlparse
 
 
 # TODO: maybe as_dict_index should return also a flag for
