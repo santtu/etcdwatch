@@ -17,6 +17,7 @@ import sys
 import logging
 import urllib3.exceptions
 import time
+from urllib.parse import urlparse
 
 
 # TODO: maybe as_dict_index should return also a flag for
@@ -150,6 +151,8 @@ def main():
                         help="etcd host (default localhost)")
     parser.add_argument('-p', '--port', type=int, default=4001,
                         help="etcd port (default 4001)")
+    parser.add_argument('-u', '--url', type=urlparse,
+                        help="etcd host in URL format")
     parser.add_argument(
         '-f', '--format',
         choices=('json', 'yaml', 'pickle'), default='json',
@@ -189,7 +192,7 @@ def main():
 
     if args.debug:
         log.setLevel(logging.DEBUG)
-        logging.getLogger().setLevel(logging.DEBUG)
+        #logging.getLogger().setLevel(logging.DEBUG)
 
     log.debug("Parsed args: %r", args)
 
@@ -197,9 +200,19 @@ def main():
 
     try:
         while True:
-            client = etcd.Client(host=args.host,
-                                 port=args.port,
-                                 protocol=args.protocol)
+            if args.url:
+                host, port_str = args.url.netloc.split(":")
+                port = int(port_str)
+                client = etcd.Client(host=host, port=port,
+                                     protocol=args.url.scheme)
+                log.debug("Client %r from URL %r: host=%s port=%s proto=%s",
+                          client, args.url, host, port, args.url.scheme)
+            else:
+                client = etcd.Client(host=args.host,
+                                     port=args.port,
+                                     protocol=args.protocol)
+                log.debug("Client %r from options: host=%s pot=%s proto=%s",
+                          client, args.host, args.port, args.protocol)
 
             log.debug("client: %r", client)
 
