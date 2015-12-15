@@ -10,7 +10,7 @@ with open(path.join(here, 'README.rst'), encoding='utf-8') as f:
     long_description = f.read()
 
 setup(name='etcdwatch',
-      version='0.1',
+      version='0.3',
       description='Program to run a command whenever etcd registry changes',
       long_description=long_description,
       author='Santeri Paavolainen',
@@ -25,8 +25,6 @@ setup(name='etcdwatch',
           'Programming Language :: Python :: 2.6',
           'Programming Language :: Python :: 2.7',
           'Programming Language :: Python :: 3',
-          'Programming Language :: Python :: 3.2',
-          'Programming Language :: Python :: 3.3',
           'Programming Language :: Python :: 3.4',
           'Programming Language :: Python :: 3.5'
       ],
